@@ -1,12 +1,12 @@
 // подключаем модули и пакеты
 require('dotenv').config();
+const console = require('console');// шоб линтер не ругался как бабка
 const express = require('express');// сервер
 const mongoose = require('mongoose');// бд
-const console = require('console');// шоб линтер не ругался как бабка
 const { errors } = require('celebrate');
 const cors = require('cors');
 const auth = require('./middlewares/auth');
-const { createUser, login } = require('./controllers/users');// импортируем контролеры для логина и регистрации
+const { createUser, login } = require('./controllers/auth');// импортируем контролеры для логина и регистрации
 const { validateLogin, validateCreateUser } = require('./middlewares/validation');// Валидация для логина и пароля
 const { requestLogger, errorLogger } = require('./middlewares/logger');// импорт логеров
 // задаем переменные окружения
@@ -22,12 +22,6 @@ mongoose.connect(MONGO_URL)
 app.use(express.json()); // анализирует входящие запросы JSON и помещает данные в req.body.
 // подключаем логгер запросов
 app.use(requestLogger);
-// при GET-запросе на URL /crash-test сервер будет падать. Pm2 должен его восстанавливать.
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
 // используем контролеры для логина и регистрации, им не нужна авторизация
 app.post('/signin', validateLogin, login);
 app.post('/signup', validateCreateUser, createUser);

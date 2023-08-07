@@ -15,18 +15,9 @@ const validateLogin = celebrate({
 const validateCreateUser = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().pattern(urlRegex),
     email: Joi.string().min(4).max(50).email()
       .required(),
     password: Joi.string()
-      .required(),
-  }),
-});
-// Валидация id профиля
-const validateUserId = celebrate({
-  params: Joi.object().keys({
-    userId: Joi.string().hex().length(24)
       .required(),
   }),
 });
@@ -35,20 +26,13 @@ const validateUpdateProfile = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30)
       .required(),
-    about: Joi.string().min(2).max(30)
-      .required(),
-  }),
-});
-// Обновление аватара профиля
-const validateUpdateAvatar = celebrate({
-  body: Joi.object().keys({
-    avatar: Joi.string().pattern(urlRegex)
+    email: Joi.string().min(4).max(50).email()
       .required(),
   }),
 });
 // Валидация карточек
 // Создание карточки
-const validateCreateCard = celebrate({
+const validateCreateMovie = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30)
       .required(),
@@ -57,7 +41,7 @@ const validateCreateCard = celebrate({
   }),
 });
 // Валидация id карточки
-const validateCardId = celebrate({
+const validateMovieId = celebrate({
   params: Joi.object().keys({
     cardId: Joi.string().hex().length(24)
       .required(),
@@ -67,9 +51,7 @@ const validateCardId = celebrate({
 module.exports = {
   validateLogin,
   validateCreateUser,
-  validateUserId,
   validateUpdateProfile,
-  validateUpdateAvatar,
-  validateCreateCard,
-  validateCardId,
+  validateCreateMovie,
+  validateMovieId,
 };
