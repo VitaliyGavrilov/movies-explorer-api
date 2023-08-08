@@ -9,13 +9,15 @@ const {
 // Создаем контролеры для фильмов и экспортируем их
 // GET /movies — возвращает все сохранённые текущим пользователем фильмы
 module.exports.getMovies = (req, res, next) => {
-  Movie.find({})
+  // в нашу бд будут добавляться только сохран.фильмы
+  Movie.find({})// значит фильтрация не нужна
     .then((movies) => res.status(OK).send(movies))
     .catch(next);// переходим в централизованный обработчик ошибок
 };
 // POST /movies — создаёт фильм = добавляет в сохраненные
 module.exports.createMovie = (req, res, next) => {
   Movie.create({
+    owner: req.user._id,
     ountry: req.body.ountry,
     director: req.body.director,
     duration: req.body.duration,
