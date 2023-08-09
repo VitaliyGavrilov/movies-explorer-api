@@ -3,14 +3,15 @@ const Movie = require('../models/movie');// импортируем модель 
 // импортируем ошибки и статусы ответов
 const BadRequestError = require('../errors/bad-request-err');
 const NotFoundError = require('../errors/not-found-err');
+const ForbiddenError = require('../errors/forbidden-error');
 const {
   CREATED, OK,
 } = require('../const/responses');
 // Создаем контролеры для фильмов и экспортируем их
 // GET /movies — возвращает все сохранённые текущим пользователем фильмы
 module.exports.getMovies = (req, res, next) => {
-  // в нашу бд будут добавляться только сохран.фильмы
-  Movie.find({})// значит фильтрация не нужна
+  // в нашу бд будут добавляться сохран.фильмы всех пользователей
+  Movie.find({ owner: req.user._id })// значит фильтрация нужна
     .then((movies) => res.status(OK).send(movies))
     .catch(next);// переходим в централизованный обработчик ошибок
 };
@@ -46,6 +47,8 @@ module.exports.deleteMovie = (req, res, next) => {
     .then((selectMovie) => {
       if (!selectMovie) { // проверяем наличие
         throw new NotFoundError('Нет фильма с таким id');
+      } else if (selectMovie.owner.toString() !== req.user._id) {
+        throw new ForbiddenError('Ошибка, удаление невозможно');
       } else { // если фильм есть в сохраненных, то удаляем
         Movie.findByIdAndRemove(movieId)
           .then((movie) => res.status(OK).send(movie))
