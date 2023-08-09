@@ -1,12 +1,10 @@
 # movies-explorer-api
 Репозиторий бекенда для дипломной работы
 
-Адрес репозитория: 
+Адрес репозитория: https://github.com/VitaliyGavrilov/movies-explorer-api
 
 ## Ссылки на проект
 
-IP 
+IP 51.250.73.70
 
-Frontend 
-
-Backend 
+Backend https://diplom.api.vit.nomoreparties.co/
