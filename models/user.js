@@ -23,7 +23,6 @@ const userSchema = new mongoose.Schema({
     minlength: 2, // мин.длин
     maxlength: 30, // макс.длин
     required: true,
-    default: 'Пользователь', // значение по умолчанию
   },
 });
 // добавляем метод для схемы, он проверяет почту и пароль при входе в аккаунт
