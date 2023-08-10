@@ -5,14 +5,12 @@ const express = require('express');// сервер
 const mongoose = require('mongoose');// бд
 const { errors } = require('celebrate');
 const cors = require('cors');
-const auth = require('./middlewares/auth');
-const { createUser, login } = require('./controllers/auth');// импортируем контролеры для логина и регистрации
-const { validateLogin, validateCreateUser } = require('./middlewares/validation');// Валидация для логина и пароля
 const { requestLogger, errorLogger } = require('./middlewares/logger');// импорт логеров
 // задаем переменные окружения
 const { PORT = 3000, BASE_PATH = 'http://localhost:3000', MONGO_URL = 'mongodb://127.0.0.1:27017/bitfilmsdb' } = process.env;// переменные окружения
 // запускаем сервер
 const app = express();
+// для корс ошибок
 app.use(cors());
 // подключаемся к бд
 mongoose.connect(MONGO_URL)
@@ -22,12 +20,7 @@ mongoose.connect(MONGO_URL)
 app.use(express.json()); // анализирует входящие запросы JSON и помещает данные в req.body.
 // подключаем логгер запросов
 app.use(requestLogger);
-// используем контролеры для логина и регистрации, им не нужна авторизация
-app.post('/signin', validateLogin, login);
-app.post('/signup', validateCreateUser, createUser);
-// авторизация
-app.use(auth);
-// испоьзуем биг-роут, в нем идут роуты которым нужна авторизаци
+// испоьзуем биг-роут
 app.use('/', require('./routes/router'));
 // подключаем логгер ошибок
 app.use(errorLogger);
