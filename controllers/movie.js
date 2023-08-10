@@ -19,13 +19,13 @@ module.exports.getMovies = (req, res, next) => {
 module.exports.createMovie = (req, res, next) => {
   Movie.create({
     owner: req.user._id,
-    ountry: req.body.ountry,
+    country: req.body.country,
     director: req.body.director,
     duration: req.body.duration,
     year: req.body.year,
     description: req.body.description,
     image: req.body.image,
-    trailer: req.body.trailer,
+    trailerLink: req.body.trailer,
     nameRU: req.body.nameRU,
     nameEN: req.body.nameEN,
     thumbnail: req.body.thumbnail,
