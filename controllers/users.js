@@ -3,6 +3,7 @@ const User = require('../models/user');// импортируем модель п
 // импортируем ошибки и статусы ответов
 const BadRequestError = require('../errors/bad-request-err');
 const NotFoundError = require('../errors/not-found-err');
+const ConflictError = require('../errors/conflict-err');
 const {
   OK,
 } = require('../const/responses');
@@ -28,6 +29,8 @@ module.exports.updateProfile = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Ошибка обновления данных профиля, переданы некорректные данные'));
+      } else if (err.code === 11000) {
+        next(new ConflictError('Ошибка обновления данных профиля, пользователь с указанной почтой уже существует'));
       } else {
         next(err);
       }
