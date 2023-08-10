@@ -15,12 +15,12 @@ const app = express();
 // подключаем
 app.use(cors()); // для корс ошибок
 app.use(helmet()); // для установки заголовков, связанных с безопасностью.
-app.use(apiLimiter);// число запросов с одного IP в единицу времени ограничено.
 mongoose.connect(MONGO_URL) // подключаемся к бд
   .then(() => console.log('Мы подлюченны к MongoDB'))
   .catch((err) => console.log(`Мы не подлюченны к MongoDB, ошибка: ${err}`));
 app.use(express.json()); // анализирует входящие запросы JSON и помещает данные в req.body.
 app.use(requestLogger); // подключаем логгер запросов
+app.use(apiLimiter);// подключаем лимитер
 // роуты
 app.use('/', require('./routes/router')); // испоьзуем биг-роут
 // обработчики ошибок
